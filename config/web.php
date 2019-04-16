@@ -9,6 +9,7 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'language' => 'ru-RU',
+	'name' => 'Теплотех', 
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -66,7 +67,9 @@ $config = [
 				'/retryConfirmEmail' => '/user/user/retry-confirm-email',
 				'/confirmEmail' => '/user/user/confirm-email',
 				'/unbind/<id:[\w\-]+>' => '/user/auth/unbind',
-				'/oauth/<authclient:[\w\-]+>' => '/user/auth/index'
+				'/oauth/<authclient:[\w\-]+>' => '/user/auth/index',
+				'/site/single/<id:\d+>/<alias:[\w_-]+>' => '/site/single',
+				'/site/single/<id:\d+>' => '/site/single',
 			],
         ],
         'authManager' => [

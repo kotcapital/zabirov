@@ -1,9 +1,12 @@
 <?php
-$imail="sergeykozin1@gmail.com"; //Email (можно через запятую - email1, email2, email3)
+use yii\helpers\Html;
+
+$imail="teploeffekt2018@mail.ru"; //Email (можно через запятую - email1, email2, email3)
 $ireply=""; //Email для ответа (нажимая на ''отправить'' клиент отправит сообщение на этот email)
 $tiny_text="спасибо за вашу заявку, мы свяжемся с вами в ближайшее время."; //Благодарность
 $ntimer=""; //Таймер возврата на главную, в секундах - после успешного заказа, по истичению заданного времени заказчика перекинет на главную страницу
 $kod_kod=""; //Скрипты
+
 ?>
 <!DOCTYPE HTML>
 <html style="height: 100%; font-family: 'Lato', Calibri, Arial, sans-serif;">
@@ -37,10 +40,10 @@ if (
     'add'     => 'Дополнительно: ', 'dop'    => 'Дополнительно: ', 'additional' => 'Дополнительно: ',
     'cena'    => 'Цена: ',          'cost'   => 'Цена: ',          'price'      => 'Стоимость: ', 'total_price' => 'Итого: ',
     'subject' => 'Тема: ',          'theme'  => 'Тема: ',
-    'tovar'   => 'Товар: ',
-    'count'   => 'Количество: ',
-    'message' => 'Сообщение: ',
-    'inn'     => 'ИНН: ',
+    'tovar'   => 'Товар: ',			
+    'count'   => 'Количество: ',	'category' => 'Категория товара: ',		'middle' => 'Подкатегория товара: ',
+    'message' => 'Сообщение: ',		'manufacture' => 'Производитель: ',		'amount' => 'Количество',
+    'inn'     => 'ИНН: ',			'param' => 'Параметры',
     'birthdate' => 'Дата рождения: ',
     'passport' => 'Паспорт: ',
 
@@ -80,13 +83,12 @@ function frarr($arr){
       $message .= ( $post[$key] ? $post[$key] : ($key . ': ') )  . PHP_EOL .  frarr($value) . PHP_EOL;
     } else
       $message .= ( $post[$key] ? $post[$key] : ($key . ': ') ) . $value . PHP_EOL;
-  }
-
-  $header = 'Content-type: text/plain; charset=UTF-8' . PHP_EOL . 
+	}
+	$header = 'Content-type: text/plain; charset=UTF-8' . PHP_EOL . 
             'From: ' . $imail . PHP_EOL . 
             'MIME-Version: 1.0'. PHP_EOL;
-
-  $title = 'Заказ с сайта ' . $_SERVER['HTTP_HOST'];
+	
+	$title = Yii::$app->request->post('comment') . ' ' . $_SERVER['HTTP_HOST'];
 
   if (!$imail) { 
 // сообщение не отправилось
@@ -144,7 +146,7 @@ function frarr($arr){
     <title>Ошибка отправки!</title></head><body>
       <div class="outer-wrap">
         <div class="container">
-          <p id="info">Ошибка отправки заказа!<br/><span>Если вы видите это сообщение при попытке оформить заказ - свяжитесь с нами, для уточнения статуса заказа.</span><br /><br /><a href="/site/index">На главную</a></p>
+          <p id="info">Ошибка отправки заказа!<br/><span>Если вы видите это сообщение при попытке оформить заказ - свяжитесь с нами, для уточнения статуса заказа.</span><br /><br /><?php Html::a('На главную', ['/site/index']); ?></p>
         </div>
       </div>
     <style>
@@ -160,7 +162,7 @@ function frarr($arr){
   <title>Ошибка оформления заказа!</title></head><body>
     <div class="outer-wrap">
       <div class="container">
-        <p id="info">Ошибка оформления заказа!<br/><span>Скорее всего, вы просто открыли эту страницу в браузере, вернитесь на главную и попробуйте сделать заказ.</span><br /><br /><a href="/site/index">На главную</a></p>
+        <p id="info">Ошибка оформления заказа!<br/><span>Скорее всего, вы просто открыли эту страницу в браузере, вернитесь на главную и попробуйте сделать заказ.</span><br /><br /><?php Html::a('На главную', ['/site/index']); ?></p>
       </div>
     </div>
   <style>

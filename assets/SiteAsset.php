@@ -20,15 +20,18 @@ class SiteAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css',
 		'/css/style.css',
-		'/css/style.css?rev=@@hash1.5',
+		'/css/services.css',
+		//'/css/style.css?rev=@@hash1.5',
     ];
     public $js = [
+		'/js/jquery.ui.touch-punch.min.js',
+		'/js/jquery-ui.min.js',
 		'/js/common.js',
+		
     ];
     public $depends = [
         'yii\web\YiiAsset',
-        //'yii\bootstrap\BootstrapAsset',
+        'yii\bootstrap\BootstrapAsset',
     ];
 }

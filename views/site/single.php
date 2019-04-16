@@ -1,145 +1,141 @@
+<?php
+use app\models\Catalog;
+use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
+use app\models\Category;
+use app\models\Manufacture;
+use app\models\Filters;
+use app\models\Middle;
 
+$this->title = Html::encode($goods['title']);
+	
+$this->registerMetaTag([
+    'name' => 'keywords',
+    'content' => Html::encode($goods['keyword']),
+]);	
+
+$goods_id = Yii::$app->request->get('id');
+$manufacture_id = Yii::$app->request->get('manufacture_id');
+$characteristic = Filters::find()->where(['category_id' => $goods['category_id']])->asArray()->all();
+
+$category = Category::getTypeMap();
+$manufacture = Manufacture::getTypeMap();
+$middle = Middle::getTypeMap();
+?>
 <section class="header_line">
 	<div class="container">
-		<h2>Наши услуги</h2>
+		<h2>Магазин</h2>
 	</div>
 </section>
 
-<section id="services" class="singlePge">
+<section id="services" class="singlePge ajaxLoadServices ajaxservices">
 	<div class="container flex">
-		<div class="sidebar">
-			<div class="close">&times;</div>
-			<p class="price">Цена, ₽</p>
-			<form class="filterForm" method="post">
-				<div class="inputs flex jcsb">
-					<div class="form_control before price_controls">
-						<input type="text" class="sliderValue" data-index="0" value="500" />
-					</div>
-					<div class="form_control after price_controls">
-						<input type="text" class="sliderValue" data-index="1" value="3500" />
-					</div>
-				</div>
-				<!-- inputs -->
-				<div id="slider">
-					<span class="coloredLine first"></span>
-					<span class="coloredLine last"></span>
-				</div>
-				<!-- slider -->
-				<div class="dropdown">
-					<p class="flex aic dropdown_list_toggle"><img src="/img/strelka.png"> Выпадающий список</p>
-					<div class="dropdown_checkboxes checkboxes">
-						<div class="form_control">
-							<input type="checkbox" name="filter" id="filter_1_1" value="">
-							<label for="filter_1_1">Пункт чек-бокса</label>
-						</div>
-						<div class="form_control">
-							<input type="checkbox" name="filter" id="filter_1_2" value="">
-							<label for="filter_1_2">Пункт чек-бокса</label>
-						</div>
-						<div class="form_control">
-							<input type="checkbox" name="filter" id="filter_1_3" value="">
-							<label for="filter_1_3">Пункт чек-бокса</label>
-						</div>
-						<div class="form_control">
-							<input type="checkbox" name="filter" id="filter_1_4" value="">
-							<label for="filter_1_4">Пункт чек-бокса</label>
-						</div>
-						<div class="form_control">
-							<input type="checkbox" name="filter" id="filter_1_5" value="">
-							<label for="filter_1_5">Пункт чек-бокса</label>
-						</div>
-						<div class="form_control">
-							<input type="checkbox" name="filter" id="filter_1_6" value="">
-							<label for="filter_1_6">Пункт чек-бокса</label>
-						</div>
-					</div>
-				</div>
-				<!-- dropdown_checkboxes -->
-				<div class="checkboxes static_checkboxes">
-					<div class="form_control">
-						<input type="checkbox" name="filter" id="filter_1" value="">
-						<label for="filter_1">Пункт чек-бокса</label>
-					</div>
-					<div class="form_control">
-						<input type="checkbox" name="filter" id="filter_2" value="">
-						<label for="filter_2">Пункт чек-бокса</label>
-					</div>
-					<div class="form_control">
-						<input type="checkbox" name="filter" id="filter_3" value="">
-						<label for="filter_3">Пункт чек-бокса</label>
-					</div>
-					<div class="form_control">
-						<input type="checkbox" name="filter" id="filter_4" value="">
-						<label for="filter_4">Пункт чек-бокса</label>
-					</div>
-					<div class="form_control">
-						<input type="checkbox" name="filter" id="filter_5" value="">
-						<label for="filter_5">Пункт чек-бокса</label>
-					</div>
-					<div class="form_control">
-						<input type="checkbox" name="filter" id="filter_6" value="">
-						<label for="filter_6">Пункт чек-бокса</label>
-					</div>
-				</div>
-				<!-- checkboxes -->
-				<div class="search">
-					<input type="search" name="search">
-				</div>
-				<!-- /.search -->
-				<button type="submit">Найти</button>
-			</form>
-		</div>
+		<!-- BEGIN SIDEBAR -->
+		<?php echo Yii::$app->runAction('/catalog/renderfilter') ?>
+		<!-- END SIDEBAR -->
 		<main>
-			<div class="header">
-				<div class="img"><img src="/img/productFull.jpg"></div>
+			<div class="header col-md-12">
+				<?php
+					$catalog = new Catalog();
+					$catalog->setAttributes($goods);
+					$image = $catalog->getImagePath($middle, $category_img);
+					if (file_exists($image)) {
+						echo '<div class="img col-md-12"><img class="img-responsive" src="/' . $image . '" alt="' . $goods['catname'] . '.' . $goods['name'] . '"></div>';
+					}
+				?>
 				<div class="text">
-					<p class="service_name">Ремонт</p>
-					<p class="service_price">от 4 500, ₽</p>
+					<?php
+					if ($goods['price'] == '0.00') {
+						$goods['price'] = 'Цену уточняйте';
+					}else{
+						$goods['price'] = $goods['price'] . '₽';
+					}
+					?>
+					<p class="service_name "><?= $goods['name'] ?></p>
+					<p class="service_price text text-center"><?= $goods['price'] ?></p>
 				</div>
 			</div>
+			<?php
+					$label = '<span><strong>Заказать</strong></span>';
+					echo Html::a($label, '#x', [
+						'class' => 'btn flex aic jcc order',
+						'onclick' => 'popup(1, this)',
+						'id' => $goods['goods_id'],
+						'name' => $goods['name'],
+						'manufacture' => ArrayHelper::getValue($manufacture, $goods['manufacture_id']),
+						'category' => ArrayHelper::getValue($category, $goods['category_id']),
+						'middle' => ArrayHelper::getValue($middle, $goods['middle_id']),
+						'comment' => 'Заказ товара'
+					]);
+			?>
 			<!-- header-->
 			<div class="body">
 				<ul class="sercive_tabs">
-					<li class="active">Описание</li>
-					<li>Характеристики</li>
-					<li>Фото</li>
-					<li>Опросный лист</li>
+					<?php 
+						if ($goods['description'] != null) {
+							echo '<li class="active">Описание</li>';
+						}else{
+							echo '';
+						}
+				
+						if ($characteristic != null) {
+							echo '<li>Характеристики</li>';
+						}else{
+							echo '';
+						}
+					
+						if ($goods['img'] != null) {
+							echo '<li>Фото</li>';
+						}else{
+							echo '';
+						}
+					
+						if ($goods['category_id'] == 1) {
+							echo '<li>Опросный лист</li>';
+						}else{
+							echo '';
+						}
+					?>
 				</ul>
 				<!-- sercive_tabs -->
 				<div class="content_block">
 					<div class="switch_block active">
-						<p>Для того , чтобы рассчитать и получить цену на теплообменник с параметрами, отличающимися от указанных в описании, заполните и отправьте Опросный лист. Вы также можете указать требуемые технические параметры в поле "Комментарий" в форме "Быстрого заказа".</p>
+						<p><?= $goods['description'] ?></p>
 					</div>
+				
+						<div class="switch_block">
+							<p><?php
+									foreach ($characteristic as $char) {
+										if ($char['name2'] != null) {
+											if ($goods[$char['param']] != null) {
+												echo $char['name2'] . ': ' . $goods[$char['param']] . '</br>';
+											}
+										}
+									}
+								?>
+							</p>
+						</div>
+				
 					<div class="switch_block">
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-						consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-						cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-						proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+						<?php
+							if (file_exists($image)) {
+								echo '<div class="img col-md-12"><img class="img-responsive" src="/' . $image . '" alt="' . $goods['catname'] . '.' . $goods['name'] . '"></div>';
+							}
+						?>
+						
 					</div>
-					<div class="switch_block">
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-						consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-						cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-						proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-					</div>
-					<div class="switch_block">
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-						consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-						cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-						proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-					</div>
-				</div>
+					<?php 
+						echo 
+							'
+								<div class="switch_block">
+									<p>' . $goods['name'] . '</p>
+								</div>
+							';
+					?>
+				</div>	
 			</div>
-			<!-- /.body -->
 		</main>
 	</div>
 </section>
-
 
 <?php echo Yii::$app->runAction('/site/renderseparator') ?>

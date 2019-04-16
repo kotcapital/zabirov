@@ -1,0 +1,15 @@
+.dropdown .form-control{
+	border-radius:0px;
+	margin:4px;
+}
+
+.dropdown select > option{
+	width:20px;
+    height:20px;
+	padding: 6px 10px;
+	font-size: 15px;
+}
+
+.checkboxes .form-control{
+	border-radius:0px;
+}

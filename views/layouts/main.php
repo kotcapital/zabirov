@@ -19,12 +19,62 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?= Html::csrfMetaTags() ?>
+    <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
 <body>
 <?php $this->beginBody() ?>
+
+<?php
+    $login = "";
+	$changePass = '<li>' . Html::a('Сменить пароль',['/settings/changepass']) . '</li>';
+	$users = "";
+	if (Yii::$app->user->can('rbacManage')) {
+		$users = '<li>' . Html::a('Пользователи',['/user/admin']) . '</li>';
+	}
+	$rights = "";
+	if (Yii::$app->user->can('rbacManage')) {
+		$rights = '<li>' . Html::a('Права', ['/user/rbac']) . '</li>';
+	}
+	
+	$contacts = (Yii::$app->user->can('settings') ? '<li>' . Html::a('Контакты', ['/contact/update']) . '</li>' : '');
+	$cases = (Yii::$app->user->can('settings') ? '<li>' . Html::a('Кейсы', ['/cases/index']) . '</li>' : '');
+	$tarifs = (Yii::$app->user->can('settings') ? '<li>' . Html::a('Тарифы', ['/tarifs/index']) . '</li>' : '');
+	$faq = (Yii::$app->user->can('settings') ? '<li>' . Html::a('Вопросы', ['/faq/index']) . '</li>' : '');
+	$video = (Yii::$app->user->can('settings') ? '<li>' . Html::a('Видео', ['/video/index']) . '</li>' : '');
+	$catalog = (Yii::$app->user->can('settings') ? '<li>' . Html::a('Каталог', ['/catalog/index']) . '</li>' : '');
+	$category = (Yii::$app->user->can('settings') ? '<li>' . Html::a('Категории', ['/category/index']) . '</li>' : '');
+	$middle = (Yii::$app->user->can('settings') ? '<li>' . Html::a('Подкатегории', ['/middle/index']) . '</li>' : '');
+	$subcategory = (Yii::$app->user->can('settings') ? '<li>' . Html::a('Подподкатегории', ['/subcategory/index']) . '</li>' : '');
+	$manufacture = (Yii::$app->user->can('settings') ? '<li>' . Html::a('Производители', ['/manufacture/index']) . '</li>' : '');
+	$filters = (Yii::$app->user->can('settings') ? '<li>' . Html::a('Фильтры', ['/filters/index']) . '</li>' : '');
+	
+	if (Yii::$app->user->isGuest) {
+		$login = '<li>' . Html::a('Вход', ['/login']) . '</li>';
+	} else {
+		$login = '<li class="dropdown" id="settingsdrop">
+			<a href="#" class="dropdown-toggle keep_open"  data-toggle="dropdown" >' . Yii::$app->user->identity->username . '</a>
+					<ul class="dropdown-menu keep_open" id="settings">
+					<li>' . Html::a('Выход',['/logout']) . '</li>
+					' . $changePass . '
+					<li class="divider"></li>
+					' . $users . '
+					' . $rights . '
+					' . $category . '
+					' . $middle . '
+					' . $filters . '
+					<li class="divider"></li>
+					<li class="disabled"><a href="#" >Справочники</a></li>
+					</ul>
+				</li>';
+
+	}
+
+	
+	
+	
+?>
 
 <div class="wrap">
     <?php
@@ -38,18 +88,7 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
+            $contacts, $cases, $tarifs, $faq, $video, $manufacture, $catalog, $login
         ],
     ]);
     NavBar::end();
@@ -60,6 +99,7 @@ AppAsset::register($this);
         <?= $content ?>
     </div>
 </div>
+
 
 
 <?php $this->endBody() ?>

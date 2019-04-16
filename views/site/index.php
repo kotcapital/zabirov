@@ -1,70 +1,43 @@
+<?php
+	use yii\helpers\Html;
+	use app\models\Manufacture;
 
+?>
 	<?php echo Yii::$app->runAction('/site/renderhomepage') ?>
-
+	
 	<section id="s02">
 		<div class="container">
 			<h2 class="gradient"><span>Наши услуги</span></h2>
 			<div class="row services tac">
-				<div class="col-md-3 col-sm-3 col-xs-6">
-					<div class="img"><img src="/img/Remont2.png" alt=""></div>
-					<p>Ремонт</p>
-				</div>
-				<div class="col-md-3 col-sm-3 col-xs-6">
-					<div class="img"><img src="/img/compressor.png" alt=""></div>
-					<p>Опресовка</p>
-				</div>
-				<div class="col-md-3 col-sm-3 col-xs-6">
-					<div class="img"><img src="/img/Chistka.png" alt=""></div>
-					<p>Чистка</p>
-				</div>
-				<div class="col-md-3 col-sm-3 col-xs-6">
-					<div class="img"><img src="/img/Montag.png" alt=""></div>
-					<p>Монтаж</p>
-				</div>
-				<div class="col-md-3 col-sm-3 col-xs-6">
-					<div class="img"><img src="/img/Razbor.png" alt=""></div>
-					<p>Разборная <br> чистка химией</p>
-				</div>
-				<div class="col-md-3 col-sm-3 col-xs-6">
-					<div class="img"><img src="/img/Bezrazbor.png" alt=""></div>
-					<p>Безразборная <br> чистка химией</p>
-				</div>
-				<div class="col-md-3 col-sm-3 col-xs-6">
-					<div class="img"><img src="/img/obslugivanie.png" alt=""></div>
-					<p>Обслуживание</p>
-				</div>
-				<div class="col-md-3 col-sm-3 col-xs-6">
-					<div class="img"><img src="/img/Svarka.png" alt=""></div>
-					<p>Сварочные <br> работы</p>
+				<div class="row">
+				<?php
+					foreach ($category as $cat) {
+						$res =  '
+								<div class="col-md-3 col-sm-3 col-xs-6 category" style="margin-bottom:20px">
+									<div class="img"><img src="/img/category/' . $cat['category_id'] . '.' . $cat['img'] . '" alt=""></div>
+									<p>' . $cat['name'] . '</p>
+								</div>
+							';
+						echo Html::a($res,['/site/services', 'category_id' => $cat['category_id']]);
+					};
+				?>
 				</div>
 			</div>
+			
 			<!-- /.row services -->
-			<h2 class="gradient complect"><span>оборудование и комлектующие</span></h2>
+			<h2 class="gradient complect" style="margin-bottom:40px"><span>оборудование и комлектующие</span></h2>
 			<div class="row complect tac">
-				<div class="col-md-2 col-sm-4 col-xs-6">
-					<div class="img"><img src="/img/ALFALOWAL.png" alt=""></div>
-					<p>ALFALOWAL</p>
-				</div>
-				<div class="col-md-2 col-sm-4 col-xs-6">
-					<div class="img"><img src="/img/GEOM.png" alt=""></div>
-					<p>GEOM</p>
-				</div>
-				<div class="col-md-2 col-sm-4 col-xs-6">
-					<div class="img"><img src="/img/Astera.png" alt=""></div>
-					<p>ASTERA</p>
-				</div>
-				<div class="col-md-2 col-sm-4 col-xs-6">
-					<div class="img"><img src="/img/funke.png" alt=""></div>
-					<p>FUNKE</p>
-				</div>
-				<div class="col-md-2 col-sm-4 col-xs-6">
-					<div class="img"><img src="/img/2-layers.png" alt=""></div>
-					<p>NORD</p>
-				</div>
-				<div class="col-md-2 col-sm-4 col-xs-6">
-					<div class="img"><img src="/img/Ridan.png" alt=""></div>
-					<p>Ридан</p>
-				</div>
+				<?php
+					foreach ($manufacture as $manu) {
+						$res =  '
+								<div class="col-md-2 col-sm-4 col-xs-6 manufacture" style="margin-bottom:20px">
+									<div class="img"><img src="/img/manufacture/' . $manu['manufacture_id'] . '.' . $manu['img'] . '" alt=""></div>
+									<p>' . $manu['name'] . '</p>
+								</div>
+							';
+						echo Html::a($res,['/site/services', 'manufacture_id' => $manu['manufacture_id']]);
+					}; 
+				?>
 			</div>
 			<!-- /.row complect -->
 		</div>

@@ -1,7 +1,7 @@
 
 	<section id="s01" class="homePage">
 		<div class="container">
-			<h1>Увеличим теплоотдачу теплообменника на 20%</h1>
+			<h1>Увеличение теплоотдачи до 35 %</h1>
 			<div class="advantages flex jcsa">
 				<div class="block flex aic">
 					<img src="/img/avto.png" alt="">
