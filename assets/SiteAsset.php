@@ -22,6 +22,7 @@ class SiteAsset extends AssetBundle
     public $css = [
 		'/css/style.css',
 		'/css/services.css',
+		'/css/questionnaire.css',
 		//'/css/style.css?rev=@@hash1.5',
     ];
     public $js = [
@@ -32,6 +33,6 @@ class SiteAsset extends AssetBundle
     ];
     public $depends = [
         'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
+        'yii\bootstrap\BootstrapPluginAsset',
     ];
 }

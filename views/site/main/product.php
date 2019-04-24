@@ -16,33 +16,37 @@ $post = Yii::$app->request->post();
 	<?php
 		$label = '<span><strong>Заказать</strong></span>';
 		if (count($catalog) == 0){
-			$label = '<span><strong>Отправить запрос</strong></span>';
-			$price = 'от : '. $post['price_from'] . 'до : ' . $post['price_to'];
-			$param = '';
-			if (isset($post['i1'])) {
-				$param .= ' i1 : ' . $post['i1'];
-			}
-			if (isset($post['i2'])) {
-				$param .= ' i2 : ' . $post['i2'];
-			}
-			if (isset($post['i3'])){
-				$param .= ' i3 : ' . $post['i3'];
-			}
-			$middle_id = '';
-			if (isset($post['middle_id'])){
-				$middle_id = $post['middle_id'];
-			}
+			if (Yii::$app->request->post('category_id') != 1) { 
+				$label = '<span><strong>Отправить запрос</strong></span>';
+				$price = 'от : '. $post['price_from'] . 'до : ' . $post['price_to'];
+				$param = '';
+				if (isset($post['i1'])) {
+					$param .= ' i1 : ' . $post['i1'];
+				}
+				if (isset($post['i2'])) {
+					$param .= ' i2 : ' . $post['i2'];
+				}
+				if (isset($post['i3'])){
+					$param .= ' i3 : ' . $post['i3'];
+				}
+				$middle_id = '';
+				if (isset($post['middle_id'])){
+					$middle_id = $post['middle_id'];
+				}
 
-			echo Html::a($label, '#x', [
-				'class' => 'btn flex aic jcc order',  
-				'onclick' => 'popup(1, this)',
-				'comment' => 'Запрос',
-				'category' => ArrayHelper::getValue($category, $post['category_id']),
-				'middle' => ArrayHelper::getValue($middle, $middle_id),
-				'price' => $price,
-				'name' => $post['search'],
-				'param' => $param,
-				]);
+				echo Html::a($label, '#x', [
+					'class' => 'btn flex aic jcc order',  
+					'onclick' => 'popup(1, this)',
+					'comment' => 'Запрос',
+					'category' => ArrayHelper::getValue($category, $post['category_id']),
+					'middle' => ArrayHelper::getValue($middle, $middle_id),
+					'price' => $price,
+					'name' => $post['search'],
+					'param' => $param,
+					]);
+			}else{
+				echo '<a class="btn flex aic jcc" data-toggle="modal" data-target="#opros_list"><span><strong>Отправить запрос</strong></span></a>';
+			}
 		} else {
 			$cnt = 1;
 			foreach ($catalog as $goods) {
@@ -50,7 +54,7 @@ $post = Yii::$app->request->post();
 					$res = '';
 					$catalog = new Catalog();
 					$catalog->setAttributes($goods);
-					$image = $catalog->getImagePath($middle, $category_img);
+					$image = $catalog->getImagePath($middle_img, $category_img);
 					if (file_exists($image)) {
 						$res .= '<div class="img"><img src="/' . $image . '" ></div>';
 					}
@@ -90,14 +94,13 @@ $post = Yii::$app->request->post();
 							';
 					$cnt++;
 				}else{
-					$manufacture = $post['manufacture_id'];
 					$category_card =  '
 							<div class="col-md-12 col-xs-12 category">
-								<div class="img"><img src="/img/category/' . $goods['category_id'] . '.' . $goods['img'] . '" alt=""></div>
-								<p>' . $goods['name'] . '</p>
+								<div class="img"><img style="height:70px" src="/img/category/' . $goods['category_id'] . '.' . $goods['img'] . '" alt=""></div>
+								<p style="font-size:12px">' . $goods['name'] . '</p>
 							</div>
 						';
-					echo Html::a($category_card,['/site/services', 'category_id' => $goods['category_id'], 'manufacture_id' => $manufacture], ['class' => 'col-md-3 col-xs-6', 'style' => 'margin-bottom:20px']);
+					echo Html::a($category_card,['/site/services', 'category_id' => $goods['category_id'], 'manufacture_id' => Yii::$app->request->post('manufacture_id')], ['class' => 'col-md-3 col-xs-6', 'style' => 'margin-bottom:20px']);
 					$cnt++;
 				}
 			

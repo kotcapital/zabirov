@@ -189,6 +189,6 @@ class Catalog extends \yii\db\ActiveRecord
 				return $res;
 			}
 		}
-		
+		return $res;
 	}
 }

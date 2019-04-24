@@ -41,12 +41,28 @@ if (
     'cena'    => 'Цена: ',          'cost'   => 'Цена: ',          'price'      => 'Стоимость: ', 'total_price' => 'Итого: ',
     'subject' => 'Тема: ',          'theme'  => 'Тема: ',
     'tovar'   => 'Товар: ',			
-    'count'   => 'Количество: ',	'category' => 'Категория товара: ',		'middle' => 'Подкатегория товара: ',
-    'message' => 'Сообщение: ',		'manufacture' => 'Производитель: ',		'amount' => 'Количество',
-    'inn'     => 'ИНН: ',			'param' => 'Параметры',
+    'count'   => 'Количество: ',	
+    'message' => 'Сообщение: ',		
+    'inn'     => 'ИНН: ',			
     'birthdate' => 'Дата рождения: ',
     'passport' => 'Паспорт: ',
-
+	
+	/* поля форм */
+	'category' => 'Категория товара: ',					'middle' => 'Подкатегория товара: ',			
+	'manufacture' => 'Производитель: ',					'amount' => 'Количество: ',
+	'param' => 'Параметры: ', 							'power' => 'Мощность(тепловая нагрузка):',
+	
+	'temperature_of_the_heating_medium(in)' => 'Температура греющей среды(вход.): ',		
+	'temperature_of_the_heating_medium(out)' => 'Температура греющей среды(выход.): ',	
+	'type_of_the_heating_medium' => 'Тип греющей среды: ',					
+	'allowable_head_loss_for_heating' => 'Допускаем потери напора в ПТО для греющей среды, макс. : ',			
+	'temperature_of_the_heated_medium(out)' => 'Температура нагретой среды(выход.):',
+	'temperature_of_the_heated_medium(in)' => 'Температура нагретой среды(вход.):',
+	'type_of_heated_medium' => 'Тип нагретой среды:',
+	'allowable_head_loss_for_heated' => 'Допускаем потери напора в ПТО для нагретой среды, макс. :',
+	'additional_information' => 'Дополнительные сведения и требования: ',
+	
+	
     /* свойства обьектов */
     'size'      => 'Размер: ',      'width'   => 'Ширина: ',       'height'     => 'Высота: ',    'length'  => 'Длинна: ',
     'color'     => 'Цвет: ',        'format'  => 'Формат: ',
@@ -118,7 +134,6 @@ function frarr($arr){
     </html>
 
   <?php die; }
-
   if (mail($imail, $title, $message, $header) == 1) {
 //Успешная заявка 
   ?> 
@@ -171,6 +186,8 @@ function frarr($arr){
 <?php } ?>
 <!-- метрика, аналитика -->
 <?=$kod_kod?>
+
+
 
 <style>
   #info {font-size: 1em; vertical-align: middle;}

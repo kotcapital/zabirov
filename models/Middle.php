@@ -48,5 +48,9 @@ class Middle extends \yii\db\ActiveRecord
         return ArrayHelper::map(self::find()->all(), 'middle_id', 'name');
     }
 
-
+	public static function getMapForCategory($id)
+    {
+        return ArrayHelper::map(self::find()->where(['category_id' => $id])->all(), 'middle_id', 'name');
+    }
+	
 }

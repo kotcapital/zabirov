@@ -11,6 +11,7 @@
 			<div class="row services tac">
 				<div class="row">
 				<?php
+					$cnt = 1;
 					foreach ($category as $cat) {
 						$res =  '
 								<div class="col-md-3 col-sm-3 col-xs-6 category" style="margin-bottom:20px">
@@ -19,7 +20,17 @@
 								</div>
 							';
 						echo Html::a($res,['/site/services', 'category_id' => $cat['category_id']]);
+						
+						if ($cnt % 4 == 0){
+							if ($cnt) {
+								echo '</div>';
+								echo '<div class="row">';
+							}
+						}
+						
+						$cnt++;
 					};
+					
 				?>
 				</div>
 			</div>
@@ -82,6 +93,7 @@
 			<h2>Преимущества работы с нами:</h2>
 			<div class="row">
 				<div class="col-md-5">
+				
 					<ul class="tar">
 						<li>Оперативная работа <br> без затягивания сроков</li>
 						<li>Выезд на объект в течении <br> первого дня обращения</li>
@@ -210,3 +222,5 @@
 			</div>
 		</div>
 	</section>
+	
+	

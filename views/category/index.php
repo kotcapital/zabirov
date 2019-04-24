@@ -8,12 +8,10 @@ use kartik\datetime\DateTimePicker;
 use kartik\widgets\FileInput;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-/* @var $this yii\web\View */
-/* @var $searchModel app\models\CategorySearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+use app\models\Category;
 
 $this->title = 'Categories';
-
+$type = Category::getTypeArray(); 
 ?>
 <div class="category-index">
     <?php Pjax::begin(); ?>
@@ -85,6 +83,14 @@ $this->title = 'Categories';
                 'format' => 'raw',
                 'value' => function ($data) {
 					return $data['keyword'];
+				},
+            ],
+			
+			[
+				'attribute' => 'type',
+                'format' => 'raw',
+                'value' => function ($data) use ($type) {
+					return ArrayHelper::getValue($type, $data['type']);
 				},
             ],
 			

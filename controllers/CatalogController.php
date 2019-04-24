@@ -13,6 +13,9 @@ use yii\filters\AccessControl;
 use moonland\phpexcel\Excel;
 use yii\db\Query;
 use yii\web\UploadedFile;
+use app\models\Manufacture;
+use app\models\Middle;
+
 
 class CatalogController extends Controller
 {
@@ -42,8 +45,8 @@ class CatalogController extends Controller
 	
 	public function actionRenderfilter()
     {
-		
-        return $this->renderAjax('/site/filter');
+		$manufacture = Manufacture::getTypeMap();
+        return $this->renderAjax('/site/filter', ['manufacture' => $manufacture]);
     }
 	
     public function actionIndex()

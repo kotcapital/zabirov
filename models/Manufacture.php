@@ -40,7 +40,7 @@ class Manufacture extends \yii\db\ActiveRecord
 	
 	public static function getTypeMap()
     {
-        return ArrayHelper::map(self::find()->all(), 'manufacture_id', 'name');
+        return ArrayHelper::map(self::find()->orderBy('manufacture_id')->all(), 'manufacture_id', 'name');
     }
 	
 }

@@ -38,7 +38,7 @@ $middle = Middle::getTypeMap();
 				<?php
 					$catalog = new Catalog();
 					$catalog->setAttributes($goods);
-					$image = $catalog->getImagePath($middle, $category_img);
+					$image = $catalog->getImagePath($middle_img, $category_img);
 					if (file_exists($image)) {
 						echo '<div class="img col-md-12"><img class="img-responsive" src="/' . $image . '" alt="' . $goods['catname'] . '.' . $goods['name'] . '"></div>';
 					}
@@ -67,6 +67,11 @@ $middle = Middle::getTypeMap();
 						'middle' => ArrayHelper::getValue($middle, $goods['middle_id']),
 						'comment' => 'Заказ товара'
 					]);
+			?>
+			<?php
+				if ($goods['category_id'] == 9) {
+					echo '<a class="btn flex aic jcc" style="margin-top:15px" data-toggle="modal" data-target="#list_of_questionnaires"><span><strong>Опросный лист</strong></span></a>';
+				}
 			?>
 			<!-- header-->
 			<div class="body">
@@ -102,36 +107,112 @@ $middle = Middle::getTypeMap();
 					<div class="switch_block active">
 						<p><?= $goods['description'] ?></p>
 					</div>
-				
-						<div class="switch_block">
-							<p><?php
-									foreach ($characteristic as $char) {
-										if ($char['name2'] != null) {
-											if ($goods[$char['param']] != null) {
-												echo $char['name2'] . ': ' . $goods[$char['param']] . '</br>';
-											}
+					<?php 
+						if ($characteristic != null) {
+							echo '<div class="switch_block">';
+						}
+					?>
+						<p><?php
+								foreach ($characteristic as $char) {
+									if ($char['name2'] != null) {
+										if ($goods[$char['param']] != null) {
+											echo $char['name2'] . ': ' . $goods[$char['param']] . '</br>';
 										}
 									}
-								?>
-							</p>
-						</div>
-				
-					<div class="switch_block">
-						<?php
-							if (file_exists($image)) {
-								echo '<div class="img col-md-12"><img class="img-responsive" src="/' . $image . '" alt="' . $goods['catname'] . '.' . $goods['name'] . '"></div>';
-							}
-						?>
-						
-					</div>
+								}
+							?>
+						</p>
 					<?php 
-						echo 
-							'
+						if ($characteristic != null) {
+							echo '</div>';
+						}
+					?>
+					<?php 
+						if ($goods['img'] != null) {
+							echo '<div class="switch_block">';
+								echo '<div class="img col-md-12"><img class="img-responsive" src="/' . $image . '" alt="' . $goods['catname'] . '.' . $goods['name'] . '"></div>';
+							echo '</div>';
+						}
+					?>
+					<?php
+						if ($goods['category_id'] == 1) {
+							echo '
 								<div class="switch_block">
-									<p>' . $goods['name'] . '</p>
+									<h4 class="text text-center">Введите данные для расчета</h4>
+									<form action="/site/formsubmit" method="post" style="width:auto;padding-left:0px;padding-right:0px">
+										<div class="row">
+											<div class="col-xs-12">
+												<input style="margin-top:0px" class="form-control" placeholder="Мощность(тепловая нагрузка)" name="power">
+											</div>
+											<div class="col-xs-12">
+												<div class="col-xs-12 col-md-4" style="padding-left:0px;padding-right:0px">
+													<div class="col-xs-12" style="margin-bottom:10px;margin-top:5px;padding-left:0px;padding-right:0px">
+														<input class="form-control" placeholder="t°C греющей среды(вход.)" name="temperature_of_the_heating_medium(in)">
+													</div>
+													<div class="col-xs-12" style="margin-bottom:15px;margin-top:10px;padding-left:0px;padding-right:0px">
+														<input class="form-control" placeholder="t°C греющей среды(выход.)" name="temperature_of_the_heating_medium(out)">
+													</div>
+													<div class="col-xs-12" style="margin-bottom:15px;padding-left:0px;padding-right:0px">
+														<input class="form-control" placeholder="Тип греющей среды" name="type_of_the_heating_medium">
+													</div>
+													<div class="col-xs-12" style="margin-bottom:15px;padding-left:0px;padding-right:0px">
+														<p>Допускаем потери напора в ПТО для греющей среды, макс.</p>
+														<input style="margin-top:0px" class="form-control" name="allowable_head_loss_for_heating">
+													</div>
+												</div>
+												<div class="col-md-4 image_questionnaire hidden-xs">
+													<div class="col-xs-12">
+														<img src="/img/gotova.png" class="img-responsive" style="margin: 0 auto" a/>
+													</div>
+												</div>
+												<div class="col-xs-12 col-md-4" style="padding-left:0px;padding-right:0px">
+													<div class="col-xs-12" style="margin-bottom:10px;margin-top:5px;padding-left:0px;padding-right:0px">
+														<input class="form-control" placeholder="t°C нагретой среды(выход.)" name="temperature_of_the_heated_medium(out)">
+													</div>
+													<div class="col-xs-12" style="margin-bottom:15px;margin-top:10px;padding-left:0px;padding-right:0px">
+														<input class="form-control" placeholder="t°C нагретой среды(вход.)" name="temperature_of_the_heated_medium(in)">
+													</div>
+													<div class="col-xs-12" style="margin-bottom:15px;padding-left:0px;padding-right:0px">
+														<input class="form-control" placeholder="Тип нагретой среды" name="type_of_heated_medium">
+													</div>
+													<div class="col-xs-12" style="margin-bottom:15px;padding-left:0px;padding-right:0px">
+														<p>Допускаем потери напора в ПТО для нагрев.среды, макс.</p>
+														<input style="margin-top:0px" class="form-control" name="allowable_head_loss_for_heated">
+													</div>
+												</div>
+											</div>
+											<div class="col-xs-12">
+												<p style="font-size:16px;margin-bottom:5px" class="text text-center">Дополнительные сведения и требования</p>
+												<textarea class="form-control" rows="2" name="additional_information"></textarea>
+											</div>
+											<div class="col-xs-12">
+												<div class="col-xs-6">
+													<input type="text" class="hidden" name="name" placeholder="Имя">
+												</div>
+												<div class="col-xs-6">
+													<input type="text" class="hidden" name="tel" placeholder="Телефон или почта" required="">
+												</div>
+											</div>
+											<div class="col-xs-12">
+												<div class="col-xs-6">
+													<input type="text" name="name" placeholder="Имя">
+												</div>
+												<div class="col-xs-6">
+													<input type="text" name="tel" placeholder="Телефон или почта" required="">
+												</div>
+											</div>
+										</div>
+										<input type="hidden" name="comment" value="Опросный лист">
+										<button type="submit" class="btn-submit center-block" style="margin-top:15px">Отправить</button>
+									</form>
 								</div>
 							';
-					?>
+						}else{
+							echo '';
+						}
+						?>
+						
+					
 				</div>	
 			</div>
 		</main>

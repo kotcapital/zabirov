@@ -2,13 +2,13 @@
 use yii\helpers\Html;
 use app\models\Contact;
 ?>
-<section class="separator">
+	<section class="separator">
 		<div class="container">
 			<div class="row flex aic flex-wrap tac">
 				<div class="col-md-6">
 					<h3>ПОЛУЧИТЬ БЕСПЛАТНУЮ КОНСУЛЬТАЦИЮ <br class="hidden-sm"> СПЕЦИАЛИСТА МОЖНО ПО ТЕЛЕФОНУ </h3>
 				</div>
-				<div class="col-md-4  tar">
+				<div class="col-md-4 tar">
 					<?php
 						$link = 'tel:' . Html::encode(Contact::value(Contact::PHONE));
 						$label = '<img src="/img/phone_white.png">' . Html::encode(Contact::value(Contact::PHONE));
@@ -24,3 +24,4 @@ use app\models\Contact;
 			</div>
 		</div>
 	</section>
+	

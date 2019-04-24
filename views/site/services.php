@@ -20,7 +20,7 @@ $middle = Middle::getTypeMap();
 	</div>
 </section>
 
-<section id="services" class="ajaxLoadServices ajaxservices ">
+<section id="services" class="ajaxLoadServices ajaxservices">
 	<div class="container flex">
 		<!-- BEGIN SIDEBAR -->
 	<?php echo Yii::$app->runAction('/catalog/renderfilter') ?>
@@ -31,14 +31,18 @@ $middle = Middle::getTypeMap();
 				<?php
 					$label = '<span><strong>Заказать</strong></span>';
 					if (count($catalog) == 0){
-						$label2 = '<span><strong>Отправить запрос</strong></span>';
-						echo Html::a($label2, '#x', [
-							'class' => 'btn flex aic jcc order',  
-							'onclick' => 'popup(1, this)',
-							'comment' => 'Запрос',
-							'category' => ArrayHelper::getValue($category, Yii::$app->request->get('category_id')),
-							'manufacture' => ArrayHelper::getValue($manufacture, Yii::$app->request->get('manufacture_id')),
-							]);
+						if (Yii::$app->request->get('category_id') != 1) {
+							$label2 = '<span><strong>Отправить запрос</strong></span>';
+							echo Html::a($label2, '#x', [
+								'class' => 'btn flex aic jcc order',  
+								'onclick' => 'popup(1, this)',
+								'comment' => 'Запрос',
+								'category' => ArrayHelper::getValue($category, Yii::$app->request->get('category_id')),
+								'manufacture' => ArrayHelper::getValue($manufacture, Yii::$app->request->get('manufacture_id')),
+								]);
+						}else{
+							echo '<a class="btn flex aic jcc" data-toggle="modal" data-target="#opros_list"><span><strong>Отправить запрос</strong></span></a>';
+						}
 					}else{
 						$cnt = 1;
 						foreach ($catalog as $goods) {
@@ -90,8 +94,8 @@ $middle = Middle::getTypeMap();
 							}else{
 								$category_card =  '
 										<div class="col-md-12 col-xs-12 category">
-											<div class="img"><img src="/img/category/' . $goods['category_id'] . '.' . $goods['img'] . '" alt=""></div>
-											<p>' . $goods['name'] . '</p>
+											<div class="img"><img style="height:70px" src="/img/category/' . $goods['category_id'] . '.' . $goods['img'] . '" alt=""></div>
+											<p style="font-size:12px">' . $goods['name'] . '</p>
 										</div>
 									';
 								echo Html::a($category_card,['/site/services', 'category_id' => $goods['category_id'], 'manufacture_id' => Yii::$app->request->get('manufacture_id')], ['class' => 'col-md-3 col-xs-6', 'style' => 'margin-bottom:20px']);
@@ -105,9 +109,6 @@ $middle = Middle::getTypeMap();
 		</main>
 	</div>
 </section>
-
-
-
 
 <?php echo Yii::$app->runAction('/site/renderseparator') ?>
 

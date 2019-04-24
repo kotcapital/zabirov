@@ -61,7 +61,7 @@ class SiteController extends Controller
     {
 		$this->layout = 'site';
 		$manufacture = Manufacture::find()->asArray()->all();
-		$category = Category::find()->where(['description' => 'Услуги'])->orderBy('category_id')->asArray()->all();
+		$category = Category::find()->where(['type' => 20])->orderBy('category_id')->asArray()->all();
         return $this->render('index', ['manufacture' => $manufacture, 'category' => $category]);
     }
 
@@ -71,14 +71,21 @@ class SiteController extends Controller
 		$this->layout = 'site';
 		$manufacture_id = Yii::$app->request->get('manufacture_id');
 		$category_id = Yii::$app->request->get('category_id');
-		$query = Catalog::find();
-		if ($manufacture_id != null) {
-			$query->andWhere(['manufacture_id' => $manufacture_id]);
+		$query = Category::find()->asArray()->orderBy('category_id');
+		if ($manufacture_id != null or $category_id != null) {
+			$query = new Query();
+			$query->select('cat.*')->from('catalog cat');
+			if ($manufacture_id != null) {
+				$query->andWhere(['manufacture_id' => $manufacture_id]);
+			}
+			
+			if ($category_id != null) {
+				$query->andWhere(['category_id' => $category_id]);
+			}
+			
+			$query->orderBy('sort');
 		}
-		if ($category_id != null) {
-			$query->andWhere(['category_id' => $category_id]);
-		}
-		$query->orderBy('sort')->asArray();
+		
 		if ($manufacture_id != null && $category_id == null) {
 			$query = new Query;
 			$query->select('c.*')->from('category c')->orderBy('category_id');
@@ -109,7 +116,7 @@ class SiteController extends Controller
 		if ($manufacture_id != null) {
 			return $this->render('single', ['goods' => $manufacture]);
 		}
-		return $this->render('single', ['goods' => $query->one(), 'middle' => ArrayHelper::map(Middle::find()->all(),'middle_id', 'img'), 'category_img' => ArrayHelper::map(Category::find()->all(), 'category_id', 'img')]);
+		return $this->render('single', ['goods' => $query->one(), 'middle_img' => ArrayHelper::map(Middle::find()->all(),'middle_id', 'img'), 'category_img' => ArrayHelper::map(Category::find()->all(), 'category_id', 'img')]);
 	}
 
 	public function actionFilter()
@@ -254,7 +261,7 @@ class SiteController extends Controller
 		}
 		
 		
-		return $this->renderAjax('/site/main/product', ['catalog' => $query->all(), 'middle' => ArrayHelper::map(Middle::find()->all(),'middle_id', 'img'), 'category_img' => ArrayHelper::map(Category::find()->all(), 'category_id', 'img')]);
+		return $this->renderAjax('/site/main/product', ['catalog' => $query->all(), 'middle_img' => ArrayHelper::map(Middle::find()->all(),'middle_id', 'img'), 'category_img' => ArrayHelper::map(Category::find()->all(), 'category_id', 'img')]);
 	}
 
 

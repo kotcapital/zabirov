@@ -15,6 +15,7 @@
 					<p>При аварии подменный пакет ЗИП пластин в наличии</p>
 				</div>
 			</div>
+			
 			<!-- advantages -->
 			<div class="video_block flex jcsa">
 				<div class="video col-md-7 col-xs-12">
@@ -39,3 +40,5 @@
 			<!-- /.video_block -->
 		</div>
 	</section>
+	
+	

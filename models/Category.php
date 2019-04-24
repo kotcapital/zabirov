@@ -7,6 +7,10 @@ use yii\helpers\ArrayHelper;
 
 class Category extends \yii\db\ActiveRecord
 {
+	const TYPE_DEFAULT = 10;
+	const TYPE_SHOW = 20;
+	
+	
 
     public static function tableName()
     {
@@ -16,6 +20,7 @@ class Category extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+			['type', 'integer'],
             [['description', 'keyword'], 'string'],
             [['name', 'sys_id', 'title', 'img'], 'string', 'max' => 255],
         ];
@@ -31,10 +36,19 @@ class Category extends \yii\db\ActiveRecord
             'title' => 'Заголовок',
             'keyword' => 'Ключевые слова',
 			'img' => 'Изображение',
+			'type' => 'Тип отображения',
         ];
     }
 
-
+	
+	public function getTypeArray()
+	{
+		return [
+            self::TYPE_DEFAULT => 'Не выводить на главной',
+            self::TYPE_SHOW => 'Вывести на главную',
+        ];
+	}
+	
 
     public static function getTypeMap()
     {

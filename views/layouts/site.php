@@ -39,13 +39,14 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => '/img/
 		    </div>
 		    <!-- navbar-header -->
 		    <div class=" navbar-collapse col-md-6" id="bs-example-navbar-collapse-1">
-		      <ul class="nav navbar-nav">
-				<li><?= Html::a('Главная', ['site/index#s01']) ?></li>
-				<li><?= Html::a('Магазин', ['site/services'],['style' => 'padding-left:9px;padding-right:9px;']) ?></li>
-				<li><?= Html::a('О компании', ['site/index#s011'], ['class' => 'scrollto']) ?></li>
-				<li><?= Html::a('Как работаем', ['site/index#s07'], ['class' => 'scrollto']) ?></li>
-				<li><?= Html::a('Контакты', ['site/index#footer'], ['class' => 'scrollto']) ?></li>
-		      </ul>
+		       <ul class="nav navbar-nav">
+					<li class="col-md-3 text text-center"><?= Html::a('Главная', ['site/index#s01']) ?></li>
+					<li class="col-md-4 text text-center"><?= Html::a('Магазин', ['site/services'],['style' => 'padding-left:9px;padding-right:9px;']) ?></li>
+					<li class="col-md-5 text text-center"><?= Html::a('О компании', ['site/index#s011'], ['class' => 'scrollto']) ?></li>
+					<li class="col-md-3 text text-center"><?= Html::a('Контакты', ['site/index#footer'], ['class' => 'scrollto']) ?></li>
+					<li class="col-md-4 text text-center"><?= Html::a('Как работаем', ['site/index#s07'], ['class' => 'scrollto']) ?></li>
+					<li class="col-md-5 text text-center"><?= Html::a('Опросный лист', ['#'], ['data-toggle' => 'modal', 'data-target' => '#list_of_questionnaires']) ?></li>
+				  </ul>
 		    </div>
 		    <!-- navbar-collapse -->
 		    <div class="col-md-2 contacts">
@@ -90,8 +91,6 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => '/img/
 <?= $content ?>
 
 
-
-
 	<!-- BEGIN FOOTER -->
 	<footer id="footer">
 			<div class="row flex flex-wrap">
@@ -128,7 +127,127 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => '/img/
 		</footer>
 	<!-- END FOOTER -->
 
-
+	<div class="modal fade bs-example-modal-lg" style="z-index:9999" id="opros_list" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title text text-center" id="myModalLabel">Введите данные для расчета</h4>
+				</div>
+				<div class="modal-body questionnaire" style="padding-top:0px">
+					<form action="/site/formsubmit" method="post" style="width:auto;padding-left:0px;padding-right:0px">
+						<div class="row">
+							<div class="col-xs-12">
+								<input style="margin-top:0px" class="form-control" placeholder="Мощность(тепловая нагрузка)" name="power">
+							</div>
+							<div class="col-xs-12">
+								<div class="col-xs-12 col-md-4">
+									<div class="col-xs-12" style="margin-bottom:15px;margin-top:5px">
+										<input class="form-control" placeholder="t°C греющей среды(вход.)" name="temperature of the heating medium(in)">
+									</div>
+									<div class="col-xs-12" style="margin-bottom:15px;margin-top:25px">
+										<input class="form-control" placeholder="t°C греющей среды(выход.)" name="temperature of the heating medium(out)">
+									</div>
+									<div class="col-xs-12" style="margin-bottom:15px">
+										<input class="form-control" placeholder="Тип греющей среды" name="type of the heating medium">
+									</div>
+									<div class="col-xs-12" style="margin-bottom:15px">
+										<p>Допускаем потери напора в ПТО для греющей среды, макс.</p>
+										<input style="margin-top:0px" class="form-control">
+									</div>
+								</div>
+								<div class="col-md-4 hidden-xs image_questionnaire">
+									<div class="col-xs-12">
+										<img src="/img/gotova.png" class="img-responsive" style="margin: 0 auto" a/>
+									</div>
+								</div>
+								<div class="col-xs-12 col-md-4">
+									<div class="col-xs-12" style="margin-bottom:15px;margin-top:5px">
+										<input class="form-control" placeholder="t°C нагретой среды(выход.)" name="temperature of the heated medium(out)">
+									</div>
+									<div class="col-xs-12" style="margin-bottom:15px;margin-top:25px">
+										<input class="form-control" placeholder="t°C нагретой среды(вход.)" name="temperature of the heated medium(in)">
+									</div>
+									<div class="col-xs-12" style="margin-bottom:15px">
+										<input class="form-control" placeholder="Тип нагретой среды" name="type of heated medium">
+									</div>
+									<div class="col-xs-12" style="margin-bottom:15px">
+										<p>Допускаем потери напора в ПТО для нагрев.среды, макс.</p>
+										<input style="margin-top:0px" class="form-control">
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12">
+								<p style="font-size:16px;margin-bottom:5px" class="text text-center">Дополнительные сведения и требования</p>
+								<textarea class="form-control" rows="2"></textarea>
+							</div>
+							<div class="col-xs-12">
+								<div class="col-xs-6">
+									<input type="text" name="name" placeholder="Имя">
+								</div>
+								<div class="col-xs-6">
+									<input type="text" name="tel" placeholder="Телефон или почта" required="">
+								</div>
+							</div>
+						</div>
+						<input type="hidden" name="comment" value="Опросный лист">
+						<button type="submit" class="btn-submit center-block" style="margin-top:15px">Отправить</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="modal fade bs-example-modal-lg" style="z-index:9999" id="list_of_questionnaires" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title text text-center" id="myModalLabel">Опросные листы</h4>
+				</div>
+				<div class="modal-body" style="padding-top:0px">
+					<div class="row">
+						<h4 class="text text-center" style="margin-bottom:20px;margin-top:20px">Опросные листы на теплообменное оборудование</h4>
+						<div class="col-xs-12" style="margin-bottom:5px">
+							<span class="glyphicon glyphicon-save"></span><a href="/questionnaires/oprosniy-list-teploobmennoe-oborudovanie-ridan-zhidkost-zhidkost-.doc" style="font-size:14px">Теплообменное оборудование Ридан для отопления</a></br>
+						</div>
+						<div class="col-xs-12" style="margin-bottom:5px">
+							<span class="glyphicon glyphicon-save"></span><a href="/questionnaires/oprosniy-list-teploobmennoe-oborudovanie-prom.doc" style="font-size:14px">Теплообменное оборудование Ридан для промышленного назначения</a></br>
+						</div>
+						<div class="col-xs-12" style="margin-bottom:5px">
+							<span class="glyphicon glyphicon-save"></span><a href="/questionnaires/oprosniy-list-teploobmennoe-oborudovanie-posledovat.doc" style="font-size:14px">Теплообменники Ридан для двухступенчатой последовательной схемы ГВС</a></br>
+						</div>
+						<div class="col-xs-12" style="margin-bottom:5px">
+							<span class="glyphicon glyphicon-save"></span><a href="/questionnaires/oprosniy-list-teploobmennoe-oborudovanie-smeshannoe.doc" style="font-size:14px">Теплообменники для двухступенчатой смешанной схемы ГВС</a></br>
+						</div>
+						<div class="col-xs-12" style="margin-bottom:5px">
+							<span class="glyphicon glyphicon-save"></span><a href="/questionnaires/oprosniy-list-teplovoi-punkt.doc" style="font-size:14px">Блочный тепловой пункт</a></br>
+						</div>
+						<div class="col-xs-12" style="margin-bottom:5px">
+							<span class="glyphicon glyphicon-save"></span><a href="/questionnaires/oprosnyj-list-teploobmennik-alfa-laval.doc" style="font-size:14px">Пластинчатый теплообменник Альфа Лаваль</a></br>
+						</div>
+						<h4 class="texte text-center" style="margin-bottom:20px">Опросные листы на насосы</h4>
+						<div class="col-xs-12" style="margin-bottom:5px">
+							<span class="glyphicon glyphicon-save"></span><a href="/questionnaires/vertikalnie_polopogrygnie_nasosi_2_.xls" style="font-size:14px">Вертикальные полупогружные насосы</a></br>
+						</div>
+						<div class="col-xs-12" style="margin-bottom:5px">
+							<span class="glyphicon glyphicon-save"></span><a href="/questionnaires/skvazhinnienasosi.xls" style="font-size:14px">Скважинные насосы</a></br>
+						</div>
+						<div class="col-xs-12" style="margin-bottom:5px">
+							<span class="glyphicon glyphicon-save"></span><a href="/questionnaires/Questionnaire_Chemical_Fluids_-_Sales_RU_01.xls" style="font-size:14px">Стандартного оборудования с агрессивными жидкостями</a></br>
+						</div>
+						<div class="col-xs-12" style="margin-bottom:5px">
+							<span class="glyphicon glyphicon-save"></span><a href="/questionnaires/opr-list-shnekovie-nasosu.doc" style="font-size:14px">Шнековые насосы</a></br>
+						</div>
+						<div class="col-xs-12" style="margin-bottom:5px">
+							<span class="glyphicon glyphicon-save"></span><a href="/questionnaires/oborudovanie-dly-vodopodgotovki.doc" style="font-size:14px">Оборудование для водоподготовки</a></br>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<div class="popup-bg" id="popup-bg">
 		<div class="popup" id="popup1">
@@ -149,7 +268,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => '/img/
 			</div>
 		</div>
 	</div>
-
+	
+	
+	
+	
 	<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=f0ba2a54-dcb7-4e30-8857-5a3054e6824b" type="text/javascript"></script>
 <?php $this->endBody() ?>
 </body>
