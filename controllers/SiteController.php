@@ -17,7 +17,8 @@ use yii\web\HttpException;
 use yii\helpers\ArrayHelper;
 use app\models\Middle;
 use app\models\Category;
-
+use app\models\Certificate;
+use app\models\Site;
 class SiteController extends Controller
 {
 
@@ -62,7 +63,7 @@ class SiteController extends Controller
 		$this->layout = 'site';
 		$manufacture = Manufacture::find()->asArray()->all();
 		$category = Category::find()->where(['type' => 20])->orderBy('category_id')->asArray()->all();
-        return $this->render('index', ['manufacture' => $manufacture, 'category' => $category]);
+		return $this->render('index', ['manufacture' => $manufacture, 'category' => $category]);
     }
 
 
@@ -202,6 +203,12 @@ class SiteController extends Controller
 	public function actionRenderfaq()
 	{
 		return $this->renderAjax('/site/main/faq');
+	}
+	
+	public function actionRendercertificate()
+	{
+		$certificate = Certificate::find()->asArray()->all();
+		return $this->renderAjax('/site/main/certificate', ['certificate' => $certificate]);
 	}
 
 	public function actionRendervideo()

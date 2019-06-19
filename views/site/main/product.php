@@ -9,7 +9,12 @@ use app\models\Middle;
 $manufacture = Manufacture::getTypeMap();
 $category = Category::getTypeMap();
 $middle = Middle::getTypeMap();
-$post = Yii::$app->request->post();
+
+$name_product = Yii::$app->request->post('search');
+$category_name = ArrayHelper::getValue($category, Yii::$app->request->post('category_id')); 
+$middle_name = ArrayHelper::getValue($middle, Yii::$app->request->post('middle_id')); 
+$manufacture_name = ArrayHelper::getValue($manufacture, Yii::$app->request->post('manufacture_id')); 
+$price = 'от: ' . Yii::$app->request->post('price_from') . ' до: ' . Yii::$app->request->post('price_to');
 
 ?>
 <div id="container_1" class="row" style="margin-left:0px">
@@ -17,35 +22,91 @@ $post = Yii::$app->request->post();
 		$label = '<span><strong>Заказать</strong></span>';
 		if (count($catalog) == 0){
 			if (Yii::$app->request->post('category_id') != 1) { 
-				$label = '<span><strong>Отправить запрос</strong></span>';
-				$price = 'от : '. $post['price_from'] . 'до : ' . $post['price_to'];
-				$param = '';
-				if (isset($post['i1'])) {
-					$param .= ' i1 : ' . $post['i1'];
-				}
-				if (isset($post['i2'])) {
-					$param .= ' i2 : ' . $post['i2'];
-				}
-				if (isset($post['i3'])){
-					$param .= ' i3 : ' . $post['i3'];
-				}
-				$middle_id = '';
-				if (isset($post['middle_id'])){
-					$middle_id = $post['middle_id'];
-				}
-
-				echo Html::a($label, '#x', [
-					'class' => 'btn flex aic jcc order',  
-					'onclick' => 'popup(1, this)',
-					'comment' => 'Запрос',
-					'category' => ArrayHelper::getValue($category, $post['category_id']),
-					'middle' => ArrayHelper::getValue($middle, $middle_id),
-					'price' => $price,
-					'name' => $post['search'],
-					'param' => $param,
-					]);
+				echo 
+					'
+						<div class="content col-xs-6 col-xs-offset-3">
+							<p class="text text-center">Заполните форму и мы подберём для вас лучшее предложение в ближайшее время</p>
+							<form action="/site/formsubmit" method="post">
+								<input type="text" name="name" placeholder="Имя">
+								<input type="text" name="tel" placeholder="Телефон или почта" required="">
+								<div id="orderForm">
+									<input type="hidden" value="' . $name_product . '" name="tovar">
+									<input type="hidden" value="' . $category_name . '" name="category">
+									<input type="hidden" value="' . $middle_name . '" name="middle">
+									<input type="hidden" value="' . $manufacture_name . '" name="manufacture">
+									<input type="hidden" value="' . $price . '" name="price">
+									<input type="hidden" value="Заказ товара" name="comment">
+								</div>
+								<input type="submit" value="Отправить">
+								<p class="policy">Нажимая на кнопку "Отправить" <br> Вы подтверждаете свое согласие на <br> обработку Ваших персональных данных</p>
+							</form>
+						</div>
+					';
 			}else{
-				echo '<a class="btn flex aic jcc" data-toggle="modal" data-target="#opros_list"><span><strong>Отправить запрос</strong></span></a>';
+				echo 
+					'
+						<div class="questionnaire col-xs-12">
+							<h4 class="text text-center">Введите данные для расчета</br> и мы с вами свяжемся в ближайшее время</h4>
+							<form action="/site/formsubmit" method="post" style="width:auto;padding-left:0px;padding-right:0px">
+								<div class="row">
+									<div class="col-xs-12">
+										<input style="margin-top:0px" class="form-control" placeholder="Мощность(тепловая нагрузка)" name="power">
+									</div>
+									<div class="col-xs-12">
+										<div class="col-xs-12 col-md-4" style="padding-left:0px;padding-right:0px">
+											<div class="col-xs-12" style="margin-bottom:10px;margin-top:5px;padding-left:0px;padding-right:0px">
+												<input class="form-control" placeholder="t°C греющей среды(вход.)" name="temperature_of_the_heating_medium(in)">
+											</div>
+											<div class="col-xs-12" style="margin-bottom:15px;margin-top:10px;padding-left:0px;padding-right:0px">
+												<input class="form-control" placeholder="t°C греющей среды(выход.)" name="temperature_of_the_heating_medium(out)">
+											</div>
+											<div class="col-xs-12" style="margin-bottom:15px;padding-left:0px;padding-right:0px">
+												<input class="form-control" placeholder="Тип греющей среды" name="type_of_the_heating_medium">
+											</div>
+											<div class="col-xs-12" style="margin-bottom:15px;padding-left:0px;padding-right:0px">
+												<p>Допускаем потери напора в ПТО для греющей среды, макс.</p>
+												<input style="margin-top:0px" class="form-control" name="allowable_head_loss_for_heating">
+											</div>
+										</div>
+										<div class="col-md-4 image_questionnaire hidden-xs">
+											<div class="col-xs-12">
+												<img src="/img/gotova.png" class="img-responsive" style="margin: 0 auto" a/>
+											</div>
+										</div>
+										<div class="col-xs-12 col-md-4" style="padding-left:0px;padding-right:0px">
+											<div class="col-xs-12" style="margin-bottom:10px;margin-top:5px;padding-left:0px;padding-right:0px">
+												<input class="form-control" placeholder="t°C нагретой среды(выход.)" name="temperature_of_the_heated_medium(out)">
+											</div>
+											<div class="col-xs-12" style="margin-bottom:15px;margin-top:10px;padding-left:0px;padding-right:0px">
+												<input class="form-control" placeholder="t°C нагретой среды(вход.)" name="temperature_of_the_heated_medium(in)">
+											</div>
+											<div class="col-xs-12" style="margin-bottom:15px;padding-left:0px;padding-right:0px">
+												<input class="form-control" placeholder="Тип нагретой среды" name="type_of_heated_medium">
+											</div>
+											<div class="col-xs-12" style="margin-bottom:15px;padding-left:0px;padding-right:0px">
+												<p>Допускаем потери напора в ПТО для нагрев.среды, макс.</p>
+												<input style="margin-top:0px" class="form-control" name="allowable_head_loss_for_heated">
+											</div>
+										</div>
+									</div>
+									<div class="col-xs-12">
+										<p style="font-size:16px;margin-bottom:5px" class="text text-center">Дополнительные сведения и требования</p>
+										<textarea class="form-control" rows="2" name="additional_information"></textarea>
+									</div>
+									<div class="col-xs-12">
+										<div class="col-xs-6">
+											<input type="text" name="name" placeholder="Имя">
+										</div>
+										<div class="col-xs-6">
+											<input type="text" name="tel" placeholder="Телефон или почта" required="">
+										</div>
+									</div>
+								</div>
+								<input type="hidden" name="comment" value="Опросный лист">
+								<button type="submit" class="btn-submit center-block" style="margin-top:15px">Отправить</button>
+							</form>
+						</div>
+					';
 			}
 		} else {
 			$cnt = 1;

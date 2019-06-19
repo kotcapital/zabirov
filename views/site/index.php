@@ -78,7 +78,7 @@
 				</div>
 				<div class="col-md-4 col-sm-6">
 					<div class="img"><img src="/img/Zip.png"></div>
-					<p>Заменили более <br> 1568 Зип пластин</p>
+					<p>Установили и заменили более<br> 1568 пластин и прокладок</p>
 				</div>
 			</div>
 		</div>
@@ -223,4 +223,5 @@
 		</div>
 	</section>
 	
+	<?php echo Yii::$app->runAction('/site/rendercertificate') ?>
 	

@@ -9,8 +9,17 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use app\models\Site;
 
 AppAsset::register($this);
+
+
+//return print_r($_SERVER['REQUEST_URI']);
+$check = Site::checkDomain($_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI']);
+if ($check != null) {
+	return Yii::$app->response->redirect($check);
+}
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -49,6 +58,7 @@ AppAsset::register($this);
 	$subcategory = (Yii::$app->user->can('settings') ? '<li>' . Html::a('Подподкатегории', ['/subcategory/index']) . '</li>' : '');
 	$manufacture = (Yii::$app->user->can('settings') ? '<li>' . Html::a('Производители', ['/manufacture/index']) . '</li>' : '');
 	$filters = (Yii::$app->user->can('settings') ? '<li>' . Html::a('Фильтры', ['/filters/index']) . '</li>' : '');
+	$certificate = (Yii::$app->user->can('settings') ? '<li>' . Html::a('Сертификаты', ['/certificate/index']) . '</li>' : '');
 	
 	if (Yii::$app->user->isGuest) {
 		$login = '<li>' . Html::a('Вход', ['/login']) . '</li>';
@@ -64,6 +74,7 @@ AppAsset::register($this);
 					' . $category . '
 					' . $middle . '
 					' . $filters . '
+					' . $certificate . '
 					<li class="divider"></li>
 					<li class="disabled"><a href="#" >Справочники</a></li>
 					</ul>

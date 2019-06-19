@@ -23,6 +23,7 @@ class SiteAsset extends AssetBundle
 		'/css/style.css',
 		'/css/services.css',
 		'/css/questionnaire.css',
+		'/css/homepage.css',
 		//'/css/style.css?rev=@@hash1.5',
     ];
     public $js = [

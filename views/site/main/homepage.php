@@ -1,5 +1,5 @@
-<section id="s01" class="homePage">
-		<div class="container">
+<section id="s01" class="homePage row homepage_block">
+		<div class="container homepage_form">
 			<h1>Увеличение теплоотдачи до 35 %</h1>
 			<div class="advantages flex jcsa">
 				<div class="block flex aic">
@@ -16,15 +16,9 @@
 				</div>
 			</div>
 			
-			<!-- advantages -->
+
 			<div class="video_block flex jcsa">
-				<div class="video col-md-7 col-xs-12">
-					<div class="embed-responsive embed-responsive-16by9">
-						<iframe class="embed-responsive-item"  src="https://www.youtube.com/embed/gITTx43j5ek" frameborder="0" allowfullscreen></iframe>
-					</div>
-				</div>
-				<!-- video -->
-				<div class="col-md-4 col-xs-12">
+				<div class="col-sm-6 col-md-4 col-xs-12">
 					<form action="/site/formsubmit" method="POST">
 						<p class="title">бесплатная консультация</p>
 						<p class="text">оставьте заявку и мы перезвоним <br> в течении 30 мин</p>
@@ -34,11 +28,18 @@
 						<input type="submit" value="Отправить заявку">
 						<p class="policy">Нажимая на кнопку "Отправить заявку" <br> Вы подтверждаете свое согласие на <br> обработку Ваших персональных данных</p>
 					</form>
-					<!-- form -->
 				</div>
 			</div>
-			<!-- /.video_block -->
 		</div>
-	</section>
+		<video loop muted autoplay class="homepage_video hidden-sm hidden-md">
+			<source src="/img/bg.mov">
+		</video>
+		<video loop muted autoplay class="homepage_video_sm hidden-xs hidden-lg hidden-md">
+			<source src="/img/bg.mov">
+		</video>
+		<video loop muted autoplay class="homepage_video_md hidden-xs hidden-lg hidden-sm">
+			<source src="/img/bg.mov">
+		</video>
+</section>
 	
 	

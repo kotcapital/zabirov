@@ -72,7 +72,7 @@ $category = Category::getTypeMap();
 						$category_id = Yii::$app->request->get('category_id');
 						$middle = Middle::getMapForCategory($category_id);
 						if (count($middle) != 0) {
-							echo Html::dropDownList('middle_id', null, $middle, ['prompt' => 'Выберите подкатегорию', 'class' => 'form-control ajaxsearch', 'id' => 'middle_id']);
+							echo Html::dropDownList('middle_id', Yii::$app->request->get('middle_id'), $middle, ['prompt' => 'Выберите подкатегорию', 'class' => 'form-control ajaxsearch', 'id' => 'middle_id']);
 						}
 						
 					}

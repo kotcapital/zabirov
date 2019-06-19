@@ -7,9 +7,17 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\SiteAsset;
 use app\models\Contact;
+use app\models\Site;
 
 SiteAsset::register($this);
 $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => '/img/favicon.ico']);
+
+
+$check = Site::checkDomain($_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI']);
+if ($check != null) {
+	return Yii::$app->response->redirect($check);
+}
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -18,13 +26,13 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => '/img/
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta name="yandex-verification" content="2ada6d988fb12aa0" />
+	<meta name="google-site-verification" content="4PlvlqO444BL_vdmAYrxsppalwd-nkG4bfJWHhaOx3A" />
 	<title><?= Html::encode($this->title) ?></title>
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
-
-
 <?php $this->head() ?>
 </head>
 <body>
@@ -127,7 +135,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => '/img/
 		</footer>
 	<!-- END FOOTER -->
 
-	<div class="modal fade bs-example-modal-lg" style="z-index:9999" id="opros_list" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade bs-example-modal-lg" style="z-index:9999" id="questionnaire" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -197,8 +205,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => '/img/
 			</div>
 		</div>
 	</div>
-	
-	
+
+
 	<div class="modal fade bs-example-modal-lg" style="z-index:9999" id="list_of_questionnaires" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
@@ -268,11 +276,34 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => '/img/
 			</div>
 		</div>
 	</div>
-	
-	
-	
-	
+
+
+
+
 	<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=f0ba2a54-dcb7-4e30-8857-5a3054e6824b" type="text/javascript"></script>
+	<script type="text/javascript" src="https://vk.com/js/api/openapi.js?160"></script>
+
+	<!-- VK Widget -->
+	<div id="vk_community_messages"></div>
+	<script type="text/javascript">
+	VK.Widgets.CommunityMessages("vk_community_messages", 181649277, {tooltipButtonText: "Задайте нам вопрос"});
+	</script>
+
+	<!— Yandex.Metrika counter —>
+	<script type="text/javascript" >
+	(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+	m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+	(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+	ym(53684290, "init", {
+	clickmap:true,
+	trackLinks:true,
+	accurateTrackBounce:true
+	});
+	</script>
+	<noscript><div><img src="https://mc.yandex.ru/watch/53684290" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+	<!— /Yandex.Metrika counter —>
+
 <?php $this->endBody() ?>
 </body>
 </html>
